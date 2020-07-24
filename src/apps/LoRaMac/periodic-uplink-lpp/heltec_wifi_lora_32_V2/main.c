@@ -261,12 +261,14 @@ void app_main( void )
     // initialized and activated.
     LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &LmhpComplianceParams );
 
+    ESP_LOGI(TAG, "LmHandlerJoin");
     LmHandlerJoin( );
 
     StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
     ESP_LOGI(TAG, "Entering while( 1 ) Loop ");
     while( 1 )
     {
+
         // Processes the LoRaMac events
         LmHandlerProcess( );
 
