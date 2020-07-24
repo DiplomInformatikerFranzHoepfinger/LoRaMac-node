@@ -48,10 +48,10 @@ extern "C"
  */
 #define RADIO_RESET                                 PA_0
 
-#define RADIO_MOSI                                  PA_7
-#define RADIO_MISO                                  PA_6
-#define RADIO_SCLK                                  PA_5
-#define RADIO_NSS                                   PB_6
+#define RADIO_MOSI                                  27	//LoRa_MOSI
+#define RADIO_MISO                                  19	//LoRa_MISO
+#define RADIO_SCLK                                  5 	//LoRa_SCK
+#define RADIO_NSS                                   18	//LoRa_CS
 
 #define RADIO_DIO_0                                 PA_10
 #define RADIO_DIO_1                                 PB_3
