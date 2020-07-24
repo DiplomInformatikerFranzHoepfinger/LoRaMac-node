@@ -1,12 +1,6 @@
 # Edit following two lines to set component requirements (see docs)
 
 
-
-
-
-set(REGION_EU868 "6.2.0")
-
-
 set(COMPONENT_REQUIRES )
 set(COMPONENT_PRIV_REQUIRES )
 
