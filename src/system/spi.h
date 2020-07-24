@@ -100,7 +100,7 @@ void SpiFrequency( Spi_t *obj, uint32_t hz );
  * \param [IN] outData Byte to be sent
  * \retval inData      Received byte.
  */
-uint16_t SpiInOut( Spi_t *obj, uint16_t outData );
+void SpiInOut( Spi_t *obj, uint8_t cmd, uint8_t *buf, uint8_t len);
 
 #ifdef __cplusplus
 }

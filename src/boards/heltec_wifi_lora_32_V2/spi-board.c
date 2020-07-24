@@ -113,12 +113,18 @@ void SpiFrequency( Spi_t *obj, uint32_t hz )
 
 }
 
-uint16_t SpiInOut( Spi_t *obj, uint16_t outData )
+
+void SpiInOut( Spi_t *obj, uint8_t cmd, uint8_t *buf, uint8_t len)
 {
-    uint8_t rxData = 0;
-
-    //TODO
-
-    return( rxData );
+	spi_transaction_t spiTransaction;
+    memset(buf, 0, len);
+    memset(&spiTransaction, 0, sizeof(spiTransaction));
+    spiTransaction.addr = cmd;
+    spiTransaction.length = 8 * len;
+    spiTransaction.rxlength = 8 * len;
+    spiTransaction.tx_buffer = buf;
+    spiTransaction.rx_buffer = buf;
+    esp_err_t err = spi_device_transmit(spi_lora, &spiTransaction);
+    ESP_ERROR_CHECK(err);
 }
 
