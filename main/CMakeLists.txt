@@ -6,6 +6,8 @@ set(COMPONENT_PRIV_REQUIRES )
 
 set(COMPONENT_SRCS 
 	"../src/apps/LoRaMac/periodic-uplink-lpp/heltec_wifi_lora_32_V2/main.c"
+	"../src/boards/heltec_wifi_lora_32_V2/board.c"
+
 )
   
 set(COMPONENT_ADD_INCLUDEDIRS 
