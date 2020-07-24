@@ -30,6 +30,7 @@ set(COMPONENT_SRCS
 	"../src/apps/LoRaMac/periodic-uplink-lpp/heltec_wifi_lora_32_V2/main.c"
 	"../src/boards/heltec_wifi_lora_32_V2/board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/spi-board.c"
+	"../src/boards/heltec_wifi_lora_32_V2/rtc-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/sx1276-board.c"
 	"../src/boards/mcu/utilities.c"
 	#---------------------------------------------------------------------------------------
