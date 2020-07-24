@@ -23,6 +23,9 @@
 
 #include <stdio.h>
 #include "sdkconfig.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_log.h"
 #include "../firmwareVersion.h"
 #include "../../common/githubVersion.h"
 #include "utilities.h"
@@ -34,6 +37,9 @@
 #include "LmhpCompliance.h"
 #include "CayenneLpp.h"
 #include "LmHandlerMsgDisplay.h"
+
+
+#define TAG "--main--"
 
 #ifndef ACTIVE_REGION
 
@@ -220,7 +226,10 @@ static volatile bool IsTxConfirmed = LORAWAN_DEFAULT_CONFIRMED_MSG_STATE;
  */
 void app_main( void )
 {
+
+    ESP_LOGI(TAG, "BoardInitMcu");
     BoardInitMcu( );
+    ESP_LOGI(TAG, "BoardInitPeriph");
     BoardInitPeriph( );
 
     // Initialize transmission periodicity variable
@@ -231,10 +240,11 @@ void app_main( void )
 
     const Version_t appVersion = { .Value = FIRMWARE_VERSION };
     const Version_t gitHubVersion = { .Value = GITHUB_VERSION };
+    ESP_LOGI(TAG, "DisplayAppInfo");
     DisplayAppInfo( "periodic-uplink-lpp", 
                     &appVersion,
                     &gitHubVersion );
-
+    ESP_LOGI(TAG, "LmHandlerInit");
     if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
     {
         printf( "LoRaMac wasn't properly initialized" );
@@ -243,7 +253,7 @@ void app_main( void )
         {
         }
     }
-
+    ESP_LOGI(TAG, "LmHandlerSetSystemMaxRxError");
     // Set system maximum tolerated rx error in milliseconds
     LmHandlerSetSystemMaxRxError( 20 );
 
@@ -254,7 +264,7 @@ void app_main( void )
     LmHandlerJoin( );
 
     StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
-
+    ESP_LOGI(TAG, "Entering while( 1 ) Loop ");
     while( 1 )
     {
         // Processes the LoRaMac events
@@ -262,6 +272,8 @@ void app_main( void )
 
         // Process application uplinks management
         UplinkProcess( );
+
+    	vTaskDelay(100 / portTICK_PERIOD_MS);
 
         CRITICAL_SECTION_BEGIN( );
         if( IsMacProcessPending == 1 )
