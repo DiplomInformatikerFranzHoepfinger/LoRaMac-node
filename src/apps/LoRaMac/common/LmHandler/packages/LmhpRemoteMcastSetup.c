@@ -363,7 +363,7 @@ static void LmhpRemoteMcastSetupOnMcpsIndication( McpsIndication_t *mcpsIndicati
                         TimerSetValue( &SessionStartTimer, timeToSessionStart * 1000 );
                         TimerStart( &SessionStartTimer );
 
-                        DBG( "Time2SessionStart: %ld ms\n", timeToSessionStart * 1000 );
+                        DBG( "Time2SessionStart: %d ms\n", timeToSessionStart * 1000 );
 
                         LmhpRemoteMcastSetupState.DataBuffer[dataBufferIndex++] = status;
                         LmhpRemoteMcastSetupState.DataBuffer[dataBufferIndex++] = ( timeToSessionStart >> 0  ) & 0xFF;
@@ -404,18 +404,18 @@ static void LmhpRemoteMcastSetupOnMcpsIndication( McpsIndication_t *mcpsIndicati
         LmhpRemoteMcastSetupPackage.OnSendRequest( &appData, LORAMAC_HANDLER_UNCONFIRMED_MSG );
 
         DBG( "ID          : %d\n", McSessionData[0].McGroupData.IdHeader.Fields.McGroupId );
-        DBG( "McAddr      : %08lX\n", McSessionData[0].McGroupData.McAddr );
+        DBG( "McAddr      : %08X\n", McSessionData[0].McGroupData.McAddr );
         DBG( "McKey       : %02X", McSessionData[0].McGroupData.McKeyEncrypted[0] );
         for( int i = 1; i < 16; i++ )
         {
             DBG( "-%02X",  McSessionData[0].McGroupData.McKeyEncrypted[i] );
         }
         DBG( "\n" );
-        DBG( "McFCountMin : %lu\n",  McSessionData[0].McGroupData.McFCountMin );
-        DBG( "McFCountMax : %lu\n",  McSessionData[0].McGroupData.McFCountMax );
-        DBG( "SessionTime : %lu\n",  McSessionData[0].SessionTime );
+        DBG( "McFCountMin : %u\n",  McSessionData[0].McGroupData.McFCountMin );
+        DBG( "McFCountMax : %u\n",  McSessionData[0].McGroupData.McFCountMax );
+        DBG( "SessionTime : %u\n",  McSessionData[0].SessionTime );
         DBG( "SessionTimeT: %d\n",  McSessionData[0].SessionTimeout );
-        DBG( "Rx Freq     : %lu\n", McSessionData[0].RxParams.ClassC.Frequency );
+        DBG( "Rx Freq     : %u\n", McSessionData[0].RxParams.ClassC.Frequency );
         DBG( "Rx DR       : DR_%d\n", McSessionData[0].RxParams.ClassC.Datarate );
 
     }
