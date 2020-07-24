@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "sdkconfig.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "timer.h"
 #include "Commissioning.h"
@@ -35,6 +37,9 @@
 #include "LmhpClockSync.h"
 #include "LmhpRemoteMcastSetup.h"
 #include "LmhpFragmentation.h"
+
+
+#define TAG "--LmHandler--"
 
 #ifndef ACTIVE_REGION
 
@@ -213,6 +218,8 @@ static void LmHandlerPackagesProcess( void );
 LmHandlerErrorStatus_t LmHandlerInit( LmHandlerCallbacks_t *handlerCallbacks,
                                       LmHandlerParams_t *handlerParams )
 {
+
+    ESP_LOGI(TAG, "LmHandlerInit");
     //
     MibRequestConfirm_t mibReq;
     LmHandlerParams = handlerParams;
@@ -229,11 +236,14 @@ LmHandlerErrorStatus_t LmHandlerInit( LmHandlerCallbacks_t *handlerCallbacks,
 
     IsClassBSwitchPending = false;
 
+    ESP_LOGI(TAG, "LoRaMacInitialization");
     if( LoRaMacInitialization( &LoRaMacPrimitives, &LoRaMacCallbacks, LmHandlerParams->Region ) != LORAMAC_STATUS_OK )
     {
+        ESP_LOGE(TAG, "LoRaMacInitialization --> LORAMAC_HANDLER_ERROR");
         return LORAMAC_HANDLER_ERROR;
     }
 
+    ESP_LOGI(TAG, "NvmCtxMgmtRestore");
     // Try to restore from NVM and query the mac if possible.
     if( NvmCtxMgmtRestore( ) == NVMCTXMGMT_STATUS_SUCCESS )
     {

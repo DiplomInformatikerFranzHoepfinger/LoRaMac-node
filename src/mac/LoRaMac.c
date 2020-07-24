@@ -30,6 +30,8 @@
  *
  * \author    Johannes Bruder ( STACKFORCE )
  */
+#include "sdkconfig.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "region/Region.h"
 #include "LoRaMacClassB.h"
@@ -46,6 +48,8 @@
 #include "LoRaMacSerializer.h"
 
 #include "LoRaMac.h"
+
+#define TAG "--LoRaMac--"
 
 #ifndef LORAMAC_VERSION
 /*!
@@ -3175,9 +3179,12 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t* primitives, LoRaMacC
     LoRaMacClassBCallback_t classBCallbacks;
     LoRaMacClassBParams_t classBParams;
 
+    ESP_LOGI(TAG, "LoRaMacInitialization");
+
     if( ( primitives == NULL ) ||
         ( callbacks == NULL ) )
     {
+        ESP_LOGI(TAG, "LoRaMacInitialization --> LORAMAC_STATUS_PARAMETER_INVALID");
         return LORAMAC_STATUS_PARAMETER_INVALID;
     }
 
@@ -3186,11 +3193,91 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t* primitives, LoRaMacC
         ( primitives->MacMlmeConfirm == NULL ) ||
         ( primitives->MacMlmeIndication == NULL ) )
     {
+        ESP_LOGI(TAG, "LoRaMacInitialization --> LORAMAC_STATUS_PARAMETER_INVALID");
         return LORAMAC_STATUS_PARAMETER_INVALID;
     }
+
+
+
     // Verify if the region is supported
+    switch(region)
+    {
+
+        /*!
+         * AS band on 923MHz
+         */
+    case LORAMAC_REGION_AS923:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_AS923 AS band on 923MHz", region);
+    	break;
+        /*!
+         * Australian band on 915MHz
+         */
+    case LORAMAC_REGION_AU915:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_AU915 Australian band on 915MHz", region);
+    	break;
+        /*!
+         * Chinese band on 470MHz
+         */
+    case LORAMAC_REGION_CN470:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_CN470 Chinese band on 470MHz", region);
+    	break;
+        /*!
+         * Chinese band on 779MHz
+         */
+    case LORAMAC_REGION_CN779:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_CN779 Chinese band on 779MHz", region);
+    	break;
+        /*!
+         * European band on 433MHz
+         */
+    case LORAMAC_REGION_EU433:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_EU433 European band on 433MHz", region);
+    	break;
+        /*!
+         * European band on 868MHz
+         */
+    case LORAMAC_REGION_EU868:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_EU868 European band on 868MHz", region);
+    	break;
+        /*!
+         * South korean band on 920MHz
+         */
+    case LORAMAC_REGION_KR920:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_KR920 South korean band on 920MHz", region);
+    	break;
+        /*!
+         * India band on 865MHz
+         */
+    case LORAMAC_REGION_IN865:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_IN865 India band on 865MHz", region);
+    	break;
+        /*!
+         * North american band on 915MHz
+         */
+    case LORAMAC_REGION_US915:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_US915 North american band on 915MHz", region);
+    	break;
+        /*!
+         * Russia band on 864MHz
+         */
+    case LORAMAC_REGION_RU864:
+        ESP_LOGI(TAG, "Region: %i  LORAMAC_REGION_RU864 Russia band on 864MHz", region);
+    	break;
+
+
+    default:
+    	break;
+
+
+
+    }
+
+
+
+
     if( RegionIsActive( region ) == false )
     {
+        ESP_LOGI(TAG, "LoRaMacInitialization --> LORAMAC_STATUS_REGION_NOT_SUPPORTED");
         return LORAMAC_STATUS_REGION_NOT_SUPPORTED;
     }
 

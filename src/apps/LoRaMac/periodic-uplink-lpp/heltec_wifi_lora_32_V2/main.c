@@ -247,7 +247,7 @@ void app_main( void )
     ESP_LOGI(TAG, "LmHandlerInit");
     if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
     {
-        printf( "LoRaMac wasn't properly initialized" );
+    	ESP_LOGE( TAG, "LoRaMac wasn't properly initialized" );
         // Fatal error, endless loop.
         while ( 1 )
         {
