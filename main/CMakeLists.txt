@@ -29,6 +29,7 @@ set(COMPONENT_SRCS
 	"../src/boards/mcu/utilities.c"
 	"../src/system/timer.c"
 	"../src/apps/LoRaMac/common/LmHandlerMsgDisplay.c"
+	"../src/apps/LoRaMac/common/LmHandler/LmHandler.c"
 
 )
   

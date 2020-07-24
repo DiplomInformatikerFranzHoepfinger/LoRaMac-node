@@ -130,15 +130,6 @@ static bool AppLedStateOn = false;
  */
 static TimerEvent_t TxTimer;
 
-/*!
- * Timer to handle the state of LED1
- */
-static TimerEvent_t Led1Timer;
-
-/*!
- * Timer to handle the state of LED2
- */
-static TimerEvent_t Led2Timer;
 
 /*!
  * Timer to handle the state of LED beacon indicator
@@ -172,20 +163,6 @@ static void OnTxFrameCtrlChanged( bool isTxConfirmed );
  */
 static void OnTxTimerEvent( void* context );
 
-/*!
- * Function executed on Led 1 Timeout event
- */
-static void OnLed1TimerEvent( void* context );
-
-/*!
- * Function executed on Led 2 Timeout event
- */
-static void OnLed2TimerEvent( void* context );
-
-/*!
- * \brief Function executed on Beacon timer Timeout event
- */
-static void OnLedBeaconTimerEvent( void* context );
 
 static LmHandlerCallbacks_t LmHandlerCallbacks =
 {
@@ -237,11 +214,6 @@ static volatile uint32_t TxPeriodicity = 0;
 
 static volatile bool IsTxConfirmed = LORAWAN_DEFAULT_CONFIRMED_MSG_STATE;
 
-/*!
- * LED GPIO pins objects
- */
-extern Gpio_t Led1; // Tx
-extern Gpio_t Led2; // Rx
 
 /*!
  * Main application entry point.
@@ -250,15 +222,6 @@ void app_main( void )
 {
     BoardInitMcu( );
     BoardInitPeriph( );
-
-    TimerInit( &Led1Timer, OnLed1TimerEvent );
-    TimerSetValue( &Led1Timer, 25 );
-
-    TimerInit( &Led2Timer, OnLed2TimerEvent );
-    TimerSetValue( &Led2Timer, 25 );
-
-    TimerInit( &LedBeaconTimer, OnLedBeaconTimerEvent );
-    TimerSetValue( &LedBeaconTimer, 5000 );
 
     // Initialize transmission periodicity variable
     TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
@@ -374,9 +337,6 @@ static void OnRxData( LmHandlerAppData_t* appData, LmHandlerRxParams_t* params )
         break;
     }
 
-    // Switch LED 2 ON for each received downlink
-    GpioWrite( &Led2, 1 );
-    TimerStart( &Led2Timer );
 }
 
 static void OnClassChange( DeviceClass_t deviceClass )
@@ -450,12 +410,6 @@ static void PrepareTxFrame( void )
     CayenneLppCopy( AppData.Buffer );
     AppData.BufferSize = CayenneLppGetSize( );
 
-    if( LmHandlerSend( &AppData, IsTxConfirmed ) == LORAMAC_HANDLER_SUCCESS )
-    {
-        // Switch LED 1 ON
-        GpioWrite( &Led1, 1 );
-        TimerStart( &Led1Timer );
-    }
 }
 
 static void StartTxProcess( LmHandlerTxEvents_t txEvent )
@@ -521,33 +475,8 @@ static void OnTxTimerEvent( void* context )
     TimerStart( &TxTimer );
 }
 
-/*!
- * Function executed on Led 1 Timeout event
- */
-static void OnLed1TimerEvent( void* context )
-{
-    TimerStop( &Led1Timer );
-    // Switch LED 1 OFF
-    GpioWrite( &Led1, 0 );
-}
 
-/*!
- * Function executed on Led 2 Timeout event
- */
-static void OnLed2TimerEvent( void* context )
-{
-    TimerStop( &Led2Timer );
-    // Switch LED 2 OFF
-    GpioWrite( &Led2, 0 );
-}
 
-/*!
- * \brief Function executed on Beacon timer Timeout event
- */
-static void OnLedBeaconTimerEvent( void* context )
-{
-    GpioWrite( &Led2, 1 );
-    TimerStart( &Led2Timer );
 
-    TimerStart( &LedBeaconTimer );
-}
+
+
