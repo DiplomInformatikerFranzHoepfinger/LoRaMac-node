@@ -4,19 +4,7 @@
 
 
 
-#---------------------------------------------------------------------------------------
-# Options
-#---------------------------------------------------------------------------------------
-
-# Allow switching of active region
-set(ACTIVE_REGION_LIST   LORAMAC_REGION_EU868 LORAMAC_REGION_US915 LORAMAC_REGION_CN779
-    LORAMAC_REGION_EU433 LORAMAC_REGION_AU915 LORAMAC_REGION_AS923 LORAMAC_REGION_CN470
-    LORAMAC_REGION_KR920 LORAMAC_REGION_IN865 LORAMAC_REGION_RU864
-)
-set(ACTIVE_REGION LORAMAC_REGION_EU868 CACHE STRING "Default active region is EU868")
-set_property(CACHE ACTIVE_REGION PROPERTY STRINGS ${ACTIVE_REGION_LIST})
-
-
+set(REGION_EU868 "6.2.0")
 
 
 set(COMPONENT_REQUIRES )
