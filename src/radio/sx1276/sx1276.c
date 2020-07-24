@@ -1252,8 +1252,9 @@ void SX1276WriteBuffer( uint32_t addr, uint8_t *buffer, uint8_t size )
 {
     uint8_t i;
 
+    // on ESP32 this is not needed. Because SS is handeled by SPI Driver.
     //NSS = 0;
-    GpioWrite( &SX1276.Spi.Nss, 0 );
+    //GpioWrite( &SX1276.Spi.Nss, 0 );
 
     SpiInOut( &SX1276.Spi, addr | 0x80 );
     for( i = 0; i < size; i++ )
@@ -1261,16 +1262,18 @@ void SX1276WriteBuffer( uint32_t addr, uint8_t *buffer, uint8_t size )
         SpiInOut( &SX1276.Spi, buffer[i] );
     }
 
+    // on ESP32 this is not needed. Because SS is handeled by SPI Driver.
     //NSS = 1;
-    GpioWrite( &SX1276.Spi.Nss, 1 );
+    //GpioWrite( &SX1276.Spi.Nss, 1 );
 }
 
 void SX1276ReadBuffer( uint32_t addr, uint8_t *buffer, uint8_t size )
 {
     uint8_t i;
 
+    // on ESP32 this is not needed. Because SS is handeled by SPI Driver.
     //NSS = 0;
-    GpioWrite( &SX1276.Spi.Nss, 0 );
+    //GpioWrite( &SX1276.Spi.Nss, 0 );
 
     SpiInOut( &SX1276.Spi, addr & 0x7F );
 
@@ -1279,8 +1282,9 @@ void SX1276ReadBuffer( uint32_t addr, uint8_t *buffer, uint8_t size )
         buffer[i] = SpiInOut( &SX1276.Spi, 0 );
     }
 
+    // on ESP32 this is not needed. Because SS is handeled by SPI Driver.
     //NSS = 1;
-    GpioWrite( &SX1276.Spi.Nss, 1 );
+    //GpioWrite( &SX1276.Spi.Nss, 1 );
 }
 
 static void SX1276WriteFifo( uint8_t *buffer, uint8_t size )
