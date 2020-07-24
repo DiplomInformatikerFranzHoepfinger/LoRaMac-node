@@ -32,6 +32,7 @@ set(COMPONENT_SRCS
 	"../src/boards/heltec_wifi_lora_32_V2/spi-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/rtc-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/sx1276-board.c"
+	"../src/boards/heltec_wifi_lora_32_V2/delay-board.c"
 	"../src/boards/mcu/utilities.c"
 	#---------------------------------------------------------------------------------------
 	# Target
