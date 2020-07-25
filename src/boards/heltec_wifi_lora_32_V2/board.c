@@ -21,6 +21,8 @@
  * \author    Gregory Cristian ( Semtech )
  */
 #include "sdkconfig.h"
+#include "esp_system.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "gpio.h"
 #include "adc.h"
@@ -111,16 +113,23 @@ uint32_t BoardGetRandomSeed( void )
 void BoardGetUniqueId( uint8_t *id )
 {
 
+
+    uint8_t b[6];
+    esp_efuse_mac_get_default(b);
+
+    ESP_LOGI("BoardGetUniqueId","MAC = ## " MACSTR " ##", MAC2STR(b));
+
+
 	//TODO get it from MAC Address !
 
-    id[7] = 0;
-    id[6] = 0;
-    id[5] = 0;
-    id[4] = 0;
-    id[3] = 0;
-    id[2] = 0;
-    id[1] = 0;
-    id[0] = 0;
+    id[7] = b[5];
+    id[6] = b[4];
+    id[5] = b[3];
+    id[4] = b[2];
+    id[3] = b[1];
+    id[2] = b[0];
+    id[1] = 0xFE;
+    id[0] = 0xCA;
 }
 
 uint16_t BoardBatteryMeasureVoltage( void )
