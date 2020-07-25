@@ -354,6 +354,7 @@ void LmHandlerProcess( void )
  */
 static void LmHandlerJoinRequest( bool isOtaa )
 {
+    ESP_LOGI(TAG, "isOtaa, %i", isOtaa);
     if( isOtaa == true )
     {
         MlmeReq_t mlmeReq;
@@ -387,6 +388,7 @@ static void LmHandlerJoinRequest( bool isOtaa )
 
 void LmHandlerJoin( void )
 {
+    ESP_LOGI(TAG, "LmHandlerJoinRequest");
     LmHandlerJoinRequest( CommissioningParams.IsOtaaActivation );
 }
 
