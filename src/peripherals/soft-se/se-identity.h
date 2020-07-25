@@ -76,7 +76,8 @@ extern "C" {
 /*!
  * App/Join server IEEE EUI (big endian)
  */
-#define LORAWAN_JOIN_EUI                                   { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+//TODO if you use this code elswhere, change the AppEUI
+#define LORAWAN_JOIN_EUI                                   { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x03, 0x26, 0xFB } //Beiselen Radar Application using Acconeer A111 Chip
 
 /*!
  * Secure-element pin
