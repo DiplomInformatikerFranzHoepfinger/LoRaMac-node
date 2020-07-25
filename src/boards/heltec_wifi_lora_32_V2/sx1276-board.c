@@ -1,5 +1,5 @@
 /*!
- * \file      sx1276mb1las-board.c
+ * \file      sx1276-board.c
  *
  * \brief     Target board SX1276MB1LAS shield driver implementation
  *
@@ -21,11 +21,15 @@
  * \author    Gregory Cristian ( Semtech )
  */
 #include <stdlib.h>
+#include "sdkconfig.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "board-config.h"
 #include "delay.h"
 #include "radio.h"
 #include "sx1276-board.h"
+
+#define TAG "--sx1276-board--"
 
 /*!
  * \brief Gets the board PA selection configuration
@@ -136,6 +140,8 @@ void SX1276IoTcxoInit( void )
 
 void SX1276SetBoardTcxo( uint8_t state )
 {
+
+
 //    if( state == true )
 //    {
 //        if( GpioRead( &TcxoPower ) == 0 )
@@ -159,20 +165,21 @@ uint32_t SX1276GetBoardTcxoWakeupTime( void )
 
 void SX1276Reset( void )
 {
-//    // Enables the TCXO if available on the board design
-//    SX1276SetBoardTcxo( true );
-//
-//    // Set RESET pin to 0
-//    GpioInit( &SX1276.Reset, RADIO_RESET, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-//
-//    // Wait 1 ms
-//    DelayMs( 1 );
-//
-//    // Configure RESET as input
-//    GpioInit( &SX1276.Reset, RADIO_RESET, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
-//
-//    // Wait 6 ms
-//    DelayMs( 6 );
+	ESP_LOGI(TAG, "SX1276Reset");
+    // Enables the TCXO if available on the board design
+    SX1276SetBoardTcxo( true );
+
+    // Set RESET pin to 0
+    //GpioInit( &SX1276.Reset, RADIO_RESET, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+
+    // Wait 1 ms
+    DelayMs( 1 );
+
+    // Configure RESET as input
+    //GpioInit( &SX1276.Reset, RADIO_RESET, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+
+    // Wait 6 ms
+    DelayMs( 6 );
 }
 
 void SX1276SetRfTxPower( int8_t power )

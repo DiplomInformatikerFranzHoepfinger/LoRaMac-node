@@ -25,7 +25,8 @@
  */
 #include <stdlib.h>
 #include <stdint.h>
-
+#include "sdkconfig.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "aes.h"
 #include "cmac.h"
@@ -35,6 +36,9 @@
 #include "secure-element.h"
 #include "se-identity.h"
 #include "soft-se-hal.h"
+
+
+#define TAG "--soft-se--"
 
 /*!
  * Number of supported crypto keys
@@ -193,6 +197,7 @@ static SecureElementStatus_t ComputeCmac( uint8_t* micBxBuffer, uint8_t* buffer,
 
 SecureElementStatus_t SecureElementInit( SecureElementNvmEvent seNvmCtxChanged )
 {
+    ESP_LOGI(TAG, "SecureElementInit");
     // Assign callback
     if( seNvmCtxChanged != 0 )
     {
@@ -211,7 +216,7 @@ SecureElementStatus_t SecureElementInit( SecureElementNvmEvent seNvmCtxChanged )
 #endif
 
     SeNvmCtxChanged( );
-
+    ESP_LOGI(TAG, "SecureElementInit --> SECURE_ELEMENT_SUCCESS");
     return SECURE_ELEMENT_SUCCESS;
 }
 
@@ -479,6 +484,7 @@ SecureElementStatus_t SecureElementProcessJoinAccept( JoinReqIdentifier_t joinRe
 
 SecureElementStatus_t SecureElementSetDevEui( uint8_t* devEui )
 {
+    ESP_LOGI(TAG, "SecureElementSetDevEui");
     if( devEui == NULL )
     {
         return SECURE_ELEMENT_ERROR_NPE;
@@ -490,11 +496,13 @@ SecureElementStatus_t SecureElementSetDevEui( uint8_t* devEui )
 
 uint8_t* SecureElementGetDevEui( void )
 {
+    ESP_LOGI(TAG, "SecureElementGetDevEui");
     return SeNvmCtx.DevEui;
 }
 
 SecureElementStatus_t SecureElementSetJoinEui( uint8_t* joinEui )
 {
+    ESP_LOGI(TAG, "SecureElementSetJoinEui");
     if( joinEui == NULL )
     {
         return SECURE_ELEMENT_ERROR_NPE;
@@ -506,11 +514,13 @@ SecureElementStatus_t SecureElementSetJoinEui( uint8_t* joinEui )
 
 uint8_t* SecureElementGetJoinEui( void )
 {
+    ESP_LOGI(TAG, "SecureElementGetJoinEui");
     return SeNvmCtx.JoinEui;
 }
 
 SecureElementStatus_t SecureElementSetPin( uint8_t* pin )
 {
+    ESP_LOGI(TAG, "SecureElementSetPin");
     if( pin == NULL )
     {
         return SECURE_ELEMENT_ERROR_NPE;
@@ -523,5 +533,6 @@ SecureElementStatus_t SecureElementSetPin( uint8_t* pin )
 
 uint8_t* SecureElementGetPin( void )
 {
+    ESP_LOGI(TAG, "SecureElementGetPin");
     return SeNvmCtx.Pin;
 }

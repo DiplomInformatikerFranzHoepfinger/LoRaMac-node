@@ -354,6 +354,7 @@ void LmHandlerProcess( void )
  */
 static void LmHandlerJoinRequest( bool isOtaa )
 {
+	ESP_LOGI(TAG, "LmHandlerJoinRequest");
     ESP_LOGI(TAG, "isOtaa, %i", isOtaa);
     if( isOtaa == true )
     {

@@ -2360,6 +2360,7 @@ LoRaMacStatus_t Send( LoRaMacHeader_t* macHdr, uint8_t fPort, void* fBuffer, uin
 
 LoRaMacStatus_t SendReJoinReq( JoinReqIdentifier_t joinReqType )
 {
+	ESP_LOGI(TAG, "SendReJoinReq");
     LoRaMacStatus_t status = LORAMAC_STATUS_OK;
     LoRaMacHeader_t macHdr;
     macHdr.Value = 0;
@@ -2497,6 +2498,7 @@ static LoRaMacStatus_t SerializeTxFrame( void )
 
 static LoRaMacStatus_t ScheduleTx( bool allowDelayedTx )
 {
+	ESP_LOGI(TAG, "ScheduleTx");
     LoRaMacStatus_t status = LORAMAC_STATUS_PARAMETER_INVALID;
     NextChanParams_t nextChan;
 
@@ -2846,6 +2848,7 @@ LoRaMacStatus_t PrepareFrame( LoRaMacHeader_t* macHdr, LoRaMacFrameCtrl_t* fCtrl
 
 LoRaMacStatus_t SendFrameOnChannel( uint8_t channel )
 {
+	ESP_LOGI(TAG, "SendFrameOnChannel");
     LoRaMacStatus_t status = LORAMAC_STATUS_PARAMETER_INVALID;
     TxConfigParams_t txConfig;
     int8_t txPower = 0;
@@ -4588,6 +4591,7 @@ LoRaMacStatus_t LoRaMacMcChannelSetupRxParams( AddressIdentifier_t groupID, McRx
 
 LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t* mlmeRequest )
 {
+	ESP_LOGI(TAG, "LoRaMacMlmeRequest");
     LoRaMacStatus_t status = LORAMAC_STATUS_SERVICE_UNKNOWN;
     MlmeConfirmQueue_t queueElement;
     uint8_t macCmdPayload[2] = { 0x00, 0x00 };

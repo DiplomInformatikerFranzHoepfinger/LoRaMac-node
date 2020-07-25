@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "sdkconfig.h"
+#include "esp_log.h"
 
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
@@ -37,7 +38,7 @@
 #include "gpio.h"
 #include "spi-board.h"
 
-
+#define TAG "spi-board"
 
 static spi_device_handle_t spi_lora = NULL;
 
@@ -53,6 +54,10 @@ static spi_device_handle_t spi_lora = NULL;
 
 void SpiInit( Spi_t *obj, SpiId_t spiId, PinNames mosi, PinNames miso, PinNames sclk, PinNames nss )
 {
+
+
+	ESP_LOGI(TAG, "SpiInit, spiId %i, mosi %i, miso %i, sclk %i, nss %i" , spiId, mosi, miso, sclk, nss);
+
 
 
 	esp_err_t        ret;
@@ -84,10 +89,11 @@ void SpiInit( Spi_t *obj, SpiId_t spiId, PinNames mosi, PinNames miso, PinNames 
 
     if( spiId == SPI_1 )
     {
-
+    	ESP_LOGI(TAG, "spi_bus_initialize");
     	ret = spi_bus_initialize(VSPI_HOST, &buscfg, 1);
     	ESP_ERROR_CHECK(ret);
 
+    	ESP_LOGI(TAG, "spi_bus_add_device");
     	ret = spi_bus_add_device(VSPI_HOST, &devcfg_lora, &spi_lora);
     	ESP_ERROR_CHECK(ret);
     }
@@ -117,17 +123,18 @@ void SpiFrequency( Spi_t *obj, uint32_t hz )
 }
 
 
-void SpiInOut( Spi_t *obj, uint8_t cmd, uint8_t *buf, uint8_t len)
+void SpiInOut( Spi_t *obj, uint32_t addr, uint8_t *buf, uint8_t len)
 {
 	spi_transaction_t spiTransaction;
-    memset(buf, 0, len);
+	esp_err_t err = ESP_FAIL;
     memset(&spiTransaction, 0, sizeof(spiTransaction));
-    spiTransaction.addr = cmd;
+    spiTransaction.addr = addr;
     spiTransaction.length = 8 * len;
-    spiTransaction.rxlength = 8 * len;
     spiTransaction.tx_buffer = buf;
     spiTransaction.rx_buffer = buf;
-    esp_err_t err = spi_device_transmit(spi_lora, &spiTransaction);
+    spiTransaction.user      = (void *)1;
+	//ESP_LOGI(TAG, "SpiInOut lenght:%i", spiTransaction.length);
+    err = spi_device_polling_transmit(spi_lora, &spiTransaction);
     ESP_ERROR_CHECK(err);
 }
 

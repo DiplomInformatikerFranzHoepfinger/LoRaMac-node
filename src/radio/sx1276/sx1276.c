@@ -24,12 +24,17 @@
  */
 #include <math.h>
 #include <string.h>
+#include "sdkconfig.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "timer.h"
 #include "radio.h"
 #include "delay.h"
 #include "sx1276.h"
 #include "sx1276-board.h"
+
+#define TAG "--sx1276--"
+
 
 /*
  * Local types definition
@@ -272,6 +277,7 @@ TimerEvent_t RxTimeoutSyncWord;
 
 void SX1276Init( RadioEvents_t *events )
 {
+	ESP_LOGI(TAG, "SX1276Init");
     uint8_t i;
 
     RadioEvents = events;
@@ -758,6 +764,7 @@ uint32_t SX1276GetTimeOnAir( RadioModems_t modem, uint32_t bandwidth,
 
 void SX1276Send( uint8_t *buffer, uint8_t size )
 {
+	ESP_LOGI(TAG, "SX1276Send");
     uint32_t txTimeout = 0;
 
     switch( SX1276.Settings.Modem )
@@ -1238,13 +1245,16 @@ void SX1276SetModem( RadioModems_t modem )
 
 void SX1276Write( uint32_t addr, uint8_t data )
 {
+	ESP_LOGI(TAG, "SX1276Write addr %i, data %i", addr, data);
     SX1276WriteBuffer( addr, &data, 1 );
 }
 
 uint8_t SX1276Read( uint32_t addr )
 {
+
     uint8_t data;
     SX1276ReadBuffer( addr, &data, 1 );
+	ESP_LOGI(TAG, "SX1276Read, addr %i data: %i", addr, data);
     return data;
 }
 
