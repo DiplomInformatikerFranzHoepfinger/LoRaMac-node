@@ -104,8 +104,7 @@ extern "C" {
              * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_GEN_APP_KEY                                        \
              */                                                                                                     \
             .KeyID    = APP_KEY,                                                                                    \
-            .KeyValue = { 0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0xD2, 0xA6, 0xAB, 0xF7, 0x15, 0x88, 0x09, 0xCF, 0x4F, \
-                          0x3C },                                                                                   \
+            .KeyValue = { 0xAB, 0xC9, 0x91, 0x99, 0x61, 0x67, 0x80, 0xDE, 0x2F, 0x30, 0x08, 0x9B, 0xB9, 0x9B, 0x5A, 0x2C },\
         },                                                                                                          \
         {                                                                                                           \
             /*!                                                                                                     \
@@ -113,8 +112,7 @@ extern "C" {
              * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_APP_KEY                                            \
              */                                                                                                     \
             .KeyID    = NWK_KEY,                                                                                    \
-            .KeyValue = { 0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0xD2, 0xA6, 0xAB, 0xF7, 0x15, 0x88, 0x09, 0xCF, 0x4F, \
-                          0x3C },                                                                                   \
+            .KeyValue = { 0xAB, 0xC9, 0x91, 0x99, 0x61, 0x67, 0x80, 0xDE, 0x2F, 0x30, 0x08, 0x9B, 0xB9, 0x9B, 0x5A, 0x2C },\
         },                                                                                                          \
         {                                                                                                           \
             /*!                                                                                                     \
