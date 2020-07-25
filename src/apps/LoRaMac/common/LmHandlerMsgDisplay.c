@@ -127,7 +127,7 @@ void DisplayNetworkParametersUpdate( CommissioningParams_t *commissioningParams 
     printf( "DevEui      : %02X", commissioningParams->DevEui[0] );
     for( int i = 1; i < 8; i++ )
     {
-        printf( "-%02X", commissioningParams->DevEui[i] );
+        printf( " %02X", commissioningParams->DevEui[i] );
     }
     printf( "\n" );
     printf( "JoinEui     : %02X", commissioningParams->JoinEui[0] );
