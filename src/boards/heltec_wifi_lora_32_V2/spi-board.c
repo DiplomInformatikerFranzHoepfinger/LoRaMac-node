@@ -69,8 +69,11 @@ void SpiInit( Spi_t *obj, SpiId_t spiId, PinNames mosi, PinNames miso, PinNames 
 	spi_device_interface_config_t devcfg_lora =
 	{
 		.clock_speed_hz = SPI_TRANSFER_SPEED,
-		.mode           = 0,
-		.spics_io_num   = sclk,
+		.mode           = 1,
+		.command_bits 	= 0,
+	    .address_bits 	= 8,
+		.spics_io_num   = nss,
+		.cs_ena_posttrans = 2,
 		.queue_size     = 7,
 		.pre_cb         = NULL,
 	};
