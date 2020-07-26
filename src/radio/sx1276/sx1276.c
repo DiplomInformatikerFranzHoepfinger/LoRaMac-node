@@ -26,6 +26,7 @@
 #include <string.h>
 #include "sdkconfig.h"
 #include "esp_log.h"
+#include "driver/gpio.h"
 #include "utilities.h"
 #include "timer.h"
 #include "radio.h"
@@ -161,32 +162,32 @@ static uint32_t SX1276GetLoRaTimeOnAirNumerator( uint32_t bandwidth,
 /*!
  * \brief DIO 0 IRQ callback
  */
-static void SX1276OnDio0Irq( void* context );
+static void IRAM_ATTR SX1276OnDio0Irq( void* arg );
 
 /*!
  * \brief DIO 1 IRQ callback
  */
-static void SX1276OnDio1Irq( void* context );
+static void IRAM_ATTR SX1276OnDio1Irq( void* arg );
 
 /*!
  * \brief DIO 2 IRQ callback
  */
-static void SX1276OnDio2Irq( void* context );
+static void IRAM_ATTR SX1276OnDio2Irq( void* arg );
 
 /*!
  * \brief DIO 3 IRQ callback
  */
-static void SX1276OnDio3Irq( void* context );
+static void IRAM_ATTR SX1276OnDio3Irq( void* arg );
 
 /*!
  * \brief DIO 4 IRQ callback
  */
-static void SX1276OnDio4Irq( void* context );
+static void IRAM_ATTR SX1276OnDio4Irq( void* arg );
 
 /*!
  * \brief Tx & Rx timeout timer callback
  */
-static void SX1276OnTimeoutIrq( void* context );
+static void IRAM_ATTR SX1276OnTimeoutIrq( void* arg );
 
 /*
  * Private global constants
@@ -1450,7 +1451,7 @@ static uint32_t SX1276GetLoRaTimeOnAirNumerator( uint32_t bandwidth,
     return ( uint32_t )( ( 4 * intermediate + 1 ) * ( 1 << ( datarate - 2 ) ) );
 }
 
-static void SX1276OnTimeoutIrq( void* context )
+static void IRAM_ATTR SX1276OnTimeoutIrq( void* arg )
 {
     switch( SX1276.Settings.State )
     {
@@ -1526,7 +1527,7 @@ static void SX1276OnTimeoutIrq( void* context )
     }
 }
 
-static void SX1276OnDio0Irq( void* context )
+static void IRAM_ATTR SX1276OnDio0Irq( void* arg )
 {
     volatile uint8_t irqFlags = 0;
 
@@ -1713,7 +1714,7 @@ static void SX1276OnDio0Irq( void* context )
     }
 }
 
-static void SX1276OnDio1Irq( void* context )
+static void IRAM_ATTR SX1276OnDio1Irq( void* arg )
 {
     switch( SX1276.Settings.State )
     {
@@ -1800,7 +1801,7 @@ static void SX1276OnDio1Irq( void* context )
     }
 }
 
-static void SX1276OnDio2Irq( void* context )
+static void IRAM_ATTR SX1276OnDio2Irq( void* arg )
 {
     switch( SX1276.Settings.State )
     {
@@ -1870,7 +1871,7 @@ static void SX1276OnDio2Irq( void* context )
     }
 }
 
-static void SX1276OnDio3Irq( void* context )
+static void IRAM_ATTR SX1276OnDio3Irq( void* arg )
 {
     switch( SX1276.Settings.Modem )
     {
@@ -1901,7 +1902,7 @@ static void SX1276OnDio3Irq( void* context )
     }
 }
 
-static void SX1276OnDio4Irq( void* context )
+static void IRAM_ATTR SX1276OnDio4Irq( void* arg )
 {
     switch( SX1276.Settings.Modem )
     {
