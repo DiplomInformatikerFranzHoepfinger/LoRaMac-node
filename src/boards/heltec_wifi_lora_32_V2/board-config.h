@@ -46,19 +46,16 @@ extern "C"
 /*!
  * Board MCU pins definitions
  */
-#define RADIO_RESET                                 PA_0
+#define RADIO_RESET                                 14
 
 #define RADIO_MOSI                                  27	//LoRa_MOSI
 #define RADIO_MISO                                  19	//LoRa_MISO
 #define RADIO_SCLK                                  5 	//LoRa_SCK
 #define RADIO_NSS                                   18	//LoRa_CS
 
-#define RADIO_DIO_0                                 PA_10
-#define RADIO_DIO_1                                 PB_3
-#define RADIO_DIO_2                                 PB_5
-#define RADIO_DIO_3                                 PB_4
-#define RADIO_DIO_4                                 PA_9
-#define RADIO_DIO_5                                 PC_7
+#define RADIO_DIO_0                                 26
+#define RADIO_DIO_1                                 35
+#define RADIO_DIO_2                                 34
 
 
 

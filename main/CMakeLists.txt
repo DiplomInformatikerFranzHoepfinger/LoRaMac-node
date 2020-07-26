@@ -13,6 +13,7 @@ set(COMPONENT_SRCS
 	"../src/boards/heltec_wifi_lora_32_V2/board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/spi-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/rtc-board.c"
+	"../src/boards/heltec_wifi_lora_32_V2/gpio-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/sx1276-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/delay-board.c"
 	"../src/boards/mcu/utilities.c"
@@ -22,6 +23,7 @@ set(COMPONENT_SRCS
 	"../src/system/timer.c"
 	"../src/system/systime.c"
 	"../src/system/delay.c"
+	"../src/system/gpio.c"
 	
 	#---------------------------------------------------------------------------------------
 	# SE

@@ -36,7 +36,7 @@
 #include "board.h"
 
 
-
+extern void GpioInitIrq();
 
 
 
@@ -76,6 +76,7 @@ void BoardInitMcu( void )
 
 
     SpiInit( &SX1276.Spi, SPI_1, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, RADIO_NSS );
+    GpioInitIrq();
     SX1276IoInit( );
 
     if( McuInitialized == false )
