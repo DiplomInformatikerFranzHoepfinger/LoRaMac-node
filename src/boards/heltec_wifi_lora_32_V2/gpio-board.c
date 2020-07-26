@@ -23,8 +23,12 @@
  * \author    Marten Lootsma(TWTG) on behalf of Microchip/Atmel (c)2017
  */
 #include "sdkconfig.h"
+#include "esp_log.h"
 #include "driver/gpio.h"
 #include "gpio-board.h"
+
+
+#define TAG "--gpio-board--"
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -42,7 +46,6 @@ void GpioMcuInit( Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, P
     {
     case PIN_INPUT:
         gpio_set_direction( obj->pin, GPIO_MODE_INPUT );
-        //gpio_set_pin_pull_mode( obj->pin, type ); // the pull up/down need to be set after the direction for correct working
         break;
     case PIN_OUTPUT:
         gpio_set_direction( obj->pin, GPIO_MODE_OUTPUT );
@@ -53,6 +56,28 @@ void GpioMcuInit( Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, P
     	break;
     }
 
+
+    switch (config) {
+	case PIN_PUSH_PULL:
+		break;
+	case PIN_OPEN_DRAIN:
+		break;
+	}
+
+	switch (type) { // the pull up/down need to be set after the direction for correct working
+	case PIN_NO_PULL:
+		gpio_pullup_dis(obj->pin);
+		gpio_pulldown_dis(obj->pin);
+		break;
+	case PIN_PULL_UP:
+		gpio_pullup_en(obj->pin);
+		gpio_pulldown_dis(obj->pin);
+		break;
+	case PIN_PULL_DOWN:
+		gpio_pullup_dis(obj->pin);
+		gpio_pulldown_en(obj->pin);
+		break;
+	}
 
 
 
@@ -70,12 +95,34 @@ void GpioMcuSetContext( Gpio_t *obj, void* context )
 
 void GpioInitIrq()
 {
+    ESP_LOGI(TAG, "gpio_install_isr_service");
     //install gpio isr service
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
 }
 
 void GpioMcuSetInterrupt( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler )
 {
+    ESP_LOGI(TAG, "GpioMcuSetInterrupt PIN: %i ", obj->pin);
+
+    switch(irqMode)
+    {
+    case NO_IRQ:
+        //change gpio intrrupt type for one pin
+        gpio_set_intr_type(obj->pin, GPIO_PIN_INTR_DISABLE);
+		break;
+    case IRQ_RISING_EDGE:
+        //change gpio intrrupt type for one pin
+        gpio_set_intr_type(obj->pin, GPIO_PIN_INTR_POSEDGE);
+    	break;
+    case IRQ_FALLING_EDGE:
+        //change gpio intrrupt type for one pin
+        gpio_set_intr_type(obj->pin, GPIO_PIN_INTR_NEGEDGE);
+    	break;
+    case IRQ_RISING_FALLING_EDGE:
+        //change gpio intrrupt type for one pin
+        gpio_set_intr_type(obj->pin, GPIO_INTR_ANYEDGE);
+    	break;
+    }
     //hook isr handler for specific gpio pin
     gpio_isr_handler_add(obj->pin, irqHandler, (void*) obj->pin);
 }
