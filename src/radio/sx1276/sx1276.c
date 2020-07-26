@@ -1246,7 +1246,7 @@ void SX1276SetModem( RadioModems_t modem )
 
 void SX1276Write( uint32_t addr, uint8_t data )
 {
-	ESP_LOGI(TAG, "SX1276Write addr %i, data %i", addr, data);
+	//ESP_LOGI(TAG, "SX1276Write addr %i, data %i", addr, data);
     SX1276WriteBuffer( addr, &data, 1 );
 }
 
@@ -1255,7 +1255,7 @@ uint8_t SX1276Read( uint32_t addr )
 
     uint8_t data;
     SX1276ReadBuffer( addr, &data, 1 );
-	ESP_LOGI(TAG, "SX1276Read, addr %i data: %i", addr, data);
+	//ESP_LOGI(TAG, "SX1276Read, addr %i data: %i", addr, data);
     return data;
 }
 
