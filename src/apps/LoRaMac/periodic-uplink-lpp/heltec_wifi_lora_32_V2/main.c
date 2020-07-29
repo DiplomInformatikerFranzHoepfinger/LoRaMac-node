@@ -418,7 +418,8 @@ static void PrepareTxFrame( void )
 
     CayenneLppReset( );
     CayenneLppAddDigitalInput( channel++, AppLedStateOn );
-    CayenneLppAddAnalogInput( channel++, BoardGetBatteryLevel( ) * 100 / 254 );
+    CayenneLppAddAnalogInput( channel++, BoardGetBatteryLevel( ) * 100 / 254 + 13.4 );
+    CayenneLppAddAnalogInput( channel++, 17.4 );
 
     CayenneLppCopy( AppData.Buffer );
     AppData.BufferSize = CayenneLppGetSize( );
