@@ -24,6 +24,8 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -32,14 +34,19 @@
 #include "timer.h"
 #include "systime.h"
 #include "gpio.h"
-
+#include "esp_timer.h"
+#include "esp_log.h"
+#include "esp_sleep.h"
+#include "sdkconfig.h"
 #include "rtc-board.h"
+
+
+static const char* TAG = "rtc-board";
 
 #define RTC_DEBUG_ENABLE                            1
 #define RTC_DEBUG_DISABLE                           0
 
-#define RTC_DEBUG_GPIO_STATE                        RTC_DEBUG_DISABLE
-#define RTC_DEBUG_PRINTF_STATE                      RTC_DEBUG_DISABLE
+#define RTC_DEBUG_PRINTF_STATE                      RTC_DEBUG_ENABLE
 
 #define MIN_ALARM_DELAY                             3 // in ticks
 
@@ -47,8 +54,7 @@
  * \brief Indicates if the RTC is already Initialized or not
  */
 static bool RtcInitialized = false;
-static volatile bool RtcTimeoutPendingInterrupt = false;
-static volatile bool RtcTimeoutPendingPolling = false;
+
 
 typedef enum AlarmStates_e
 {
@@ -83,14 +89,29 @@ static RtcTimerContext_t RtcTimerContext;
  */
 uint32_t RtcBkupRegisters[] = { 0, 0 };
 
+/*!
+ * \brief Callback for the hw_timer when alarm expired
+ */
+static void RtcAlarmIrq(void* arg);
+
+
+// RTC timer
+static const esp_timer_create_args_t oneshot_timer_args = {
+        .callback = &RtcAlarmIrq,
+        /* argument specified here will be passed to timer callback function */
+        .arg = (void*) 0,
+        .name = "one-shot"
+};
+static esp_timer_handle_t oneshot_timer;
+
 
 void RtcInit( void )
 {
     if( RtcInitialized == false )
     {
 
-        // RTC timer
 
+        ESP_ERROR_CHECK(esp_timer_create(&oneshot_timer_args, &oneshot_timer));
 
         RtcTimerContext.AlarmState = ALARM_STOPPED;
         RtcSetTimerContext( );
@@ -159,7 +180,27 @@ void RtcStopAlarm( void )
 
 void RtcStartAlarm( uint32_t timeout )
 {
-	//TODO !!!
+    CRITICAL_SECTION_BEGIN( );
+
+    RtcStopAlarm( );
+
+    RtcTimerContext.Delay = timeout;
+
+#if( RTC_DEBUG_PRINTF_STATE == RTC_DEBUG_ENABLE )
+    printf( "TIMEOUT \t%010d\t%010d\n", RtcTimerContext.Time, RtcTimerContext.Delay );
+#endif
+
+
+    RtcTimerContext.AlarmState = ALARM_RUNNING;
+
+    /* Start the timers */
+
+    ESP_ERROR_CHECK(esp_timer_start_once(oneshot_timer, RtcTimerContext.Delay));
+    ESP_LOGI(TAG, "Started timers, time since boot: %lld us", esp_timer_get_time());
+
+
+
+    CRITICAL_SECTION_END( );
 }
 
 uint32_t RtcGetTimerValue( void )
@@ -205,25 +246,20 @@ void RtcBkupRead( uint32_t* data0, uint32_t* data1 )
 
 void RtcProcess( void )
 {
-    CRITICAL_SECTION_BEGIN( );
-
-    if( (  RtcTimerContext.AlarmState == ALARM_RUNNING ) && ( RtcTimeoutPendingPolling == true ) )
-    {
-        if( RtcGetTimerElapsedTime( ) >= RtcTimerContext.Delay )
-        {
-            RtcTimerContext.AlarmState = ALARM_STOPPED;
-
-            // Because of one shot the task will be removed after the callback
-            RtcTimeoutPendingPolling = false;
-            // NOTE: The handler should take less then 1 ms otherwise the clock shifts
-            TimerIrqHandler( );
-        }
-    }
-    CRITICAL_SECTION_END( );
+    // Not used on this platform.
 }
 
 TimerTime_t RtcTempCompensation( TimerTime_t period, float temperature )
 {
     return period;
 }
+
+static void RtcAlarmIrq(void* arg)
+{
+    RtcTimerContext.AlarmState = ALARM_STOPPED;
+    // Because of one shot the task will be removed after the callback
+    // NOTE: The handler should take less then 1 ms otherwise the clock shifts
+    TimerIrqHandler( );
+}
+
 
