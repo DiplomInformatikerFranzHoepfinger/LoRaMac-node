@@ -21,11 +21,15 @@ Maintainer: Miguel Luis ( Semtech ), Gregory Cristian ( Semtech ),
 
 #include <stdint.h>
 
+#include "sdkconfig.h"
+#include "esp_log.h"
 #include "utilities.h"
 #include "eeprom.h"
 #include "nvmm.h"
 
 #define NVMM_MAGIC_NUMBER                   0xA23
+
+#define TAG "nvmm"
 
 typedef struct sDataBlockHeader
 {
@@ -55,13 +59,17 @@ static uint32_t ComputeChecksum( uint8_t* data, uint16_t size )
 static uint32_t ComputeChecksumNvm( uint16_t addr, uint16_t size )
 {
     uint32_t checksum = NVMM_MAGIC_NUMBER; // Start with a magic number
-    uint8_t data = 0;
+
+
+    uint8_t* run_time = malloc(size);
+
+    EepromReadBuffer( addr, run_time, size );
 
     for( uint16_t i = 0; i < size; i++ )
     {
-        EepromReadBuffer( addr + i, &data, 1 );
-        checksum += data;
+        checksum += *(run_time + i);
     }
+    free(run_time);
     return checksum;
 }
 
@@ -71,6 +79,9 @@ static uint32_t ComputeChecksumNvm( uint16_t addr, uint16_t size )
 
 NvmmStatus_t NvmmDeclare( NvmmDataBlock_t* dataB, size_t num )
 {
+
+    ESP_LOGI(TAG, "NvmmDeclare, DataBlockAdrCnt = %i", DataBlockAdrCnt);
+
     NvmmStatus_t retval = NVMM_ERROR;
 
     // Increment the internal data block address

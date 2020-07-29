@@ -16,6 +16,7 @@ set(COMPONENT_SRCS
 	"../src/boards/heltec_wifi_lora_32_V2/gpio-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/sx1276-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/delay-board.c"
+	"../src/boards/heltec_wifi_lora_32_V2/eeprom-board.c"
 	"../src/boards/mcu/utilities.c"
 	#---------------------------------------------------------------------------------------
 	# Target
@@ -24,6 +25,8 @@ set(COMPONENT_SRCS
 	"../src/system/systime.c"
 	"../src/system/delay.c"
 	"../src/system/gpio.c"
+	"../src/system/nvmm.c"
+	"../src/system/eeprom.c"
 	
 	#---------------------------------------------------------------------------------------
 	# SE
