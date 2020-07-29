@@ -59,6 +59,10 @@ extern "C"
  */
 void RtcInit( void );
 
+
+
+void PrintTime(void);
+
 /*!
  * \brief Returns the minimum timeout value
  *

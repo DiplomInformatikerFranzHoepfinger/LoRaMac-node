@@ -86,7 +86,7 @@ void BoardInitPeriph( void )
 void BoardInitMcu( void )
 {
 
-
+	PrintTime();
     SpiInit( &SX1276.Spi, SPI_1, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, RADIO_NSS );
     GpioInitIrq();
     SX1276IoInit( );
