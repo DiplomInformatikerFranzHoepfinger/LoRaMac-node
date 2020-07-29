@@ -45,10 +45,7 @@
 
 
 
-void RtcInit( void )
-{
 
-}
 
 /**
 * \brief Gets the absolute time value
