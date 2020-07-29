@@ -72,7 +72,7 @@ uint32_t RtcGetMinimumTimeout( void );
  * \param[IN] milliseconds Time in milliseconds
  * \retval returns time in timer ticks
  */
-uint32_t RtcMs2Tick( TimerTime_t milliseconds );
+int64_t RtcMs2Tick( TimerTime_t milliseconds );
 
 /*!
  * \brief converts time in ticks to time in ms
@@ -80,14 +80,8 @@ uint32_t RtcMs2Tick( TimerTime_t milliseconds );
  * \param[IN] time in timer ticks
  * \retval returns time in milliseconds
  */
-TimerTime_t RtcTick2Ms( uint32_t tick );
+TimerTime_t RtcTick2Ms( int64_t tick );
 
-/*!
- * \brief Performs a delay of milliseconds by polling RTC
- *
- * \param[IN] milliseconds Delay in ms
- */
-void RtcDelayMs( TimerTime_t milliseconds );
 
 /*!
  * \brief Calculates the wake up time between wake up and MCU start
@@ -153,7 +147,7 @@ uint32_t RtcGetCalendarTime( uint16_t *milliseconds );
  *
  * \retval RTC Timer value
  */
-uint32_t RtcGetTimerValue( void );
+int64_t RtcGetTimerValue( void );
 
 /*!
  * \brief Get the RTC timer elapsed time since the last Alarm was set

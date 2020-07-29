@@ -127,7 +127,7 @@ void DisplayNetworkParametersUpdate( CommissioningParams_t *commissioningParams 
     printf( "DevEui      : %02X", commissioningParams->DevEui[0] );
     for( int i = 1; i < 8; i++ )
     {
-        printf( " %02X", commissioningParams->DevEui[i] );
+        printf( "-%02X", commissioningParams->DevEui[i] );
     }
     printf( "\n" );
     printf( "JoinEui     : %02X", commissioningParams->JoinEui[0] );
@@ -180,7 +180,7 @@ void DisplayMacMcpsRequestUpdate( LoRaMacStatus_t status, McpsReq_t *mcpsReq, Ti
     printf( "STATUS      : %s\n", MacStatusStrings[status] );
     if( status == LORAMAC_STATUS_DUTYCYCLE_RESTRICTED )
     {
-        printf( "Next Tx in  : %u [ms]\n", nextTxIn );
+        printf( "Next Tx in  : %lli [ms]\n", nextTxIn );
     }
 }
 
@@ -227,7 +227,7 @@ void DisplayMacMlmeRequestUpdate( LoRaMacStatus_t status, MlmeReq_t *mlmeReq, Ti
     printf( "STATUS      : %s\n", MacStatusStrings[status] );
     if( status == LORAMAC_STATUS_DUTYCYCLE_RESTRICTED )
     {
-        printf( "Next Tx in  : %u [ms]\n", nextTxIn );
+        printf( "Next Tx in  : %lli [ms]\n", nextTxIn );
     }
 }
 

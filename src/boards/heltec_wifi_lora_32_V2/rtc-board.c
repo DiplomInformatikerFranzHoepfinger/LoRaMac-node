@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -51,34 +52,25 @@
 * \brief Gets the absolute time value
 * \retval Absolute time in ticks
 */
-uint32_t HwTimerGetTime(void)
+struct timeval HwTimerGetTime(void)
 {
-	int64_t tt = esp_timer_get_time();
-	return (int32_t)(tt/1000);
+	struct timeval tv_now;
+	gettimeofday(&tv_now, NULL);
+	return tv_now;
 }
 
 
 
 
-uint32_t RtcMs2Tick( TimerTime_t milliseconds )
+int64_t RtcMs2Tick( TimerTime_t milliseconds )
 {
-    return ( uint32_t )( milliseconds );
+    return ( milliseconds * 1000 );
 }
 
-TimerTime_t RtcTick2Ms( uint32_t tick )
+TimerTime_t RtcTick2Ms( int64_t tick )
 {
 
-    return tick;
-}
-
-/*!
- * \brief a delay of delay ms by polling RTC
- *
- * \param[IN] delay in ms
- */
-void RtcDelayMs( uint32_t delay )
-{
-	vTaskDelay(delay / portTICK_PERIOD_MS);
+    return ( tick / 1000 );
 }
 
 
@@ -87,24 +79,24 @@ void RtcDelayMs( uint32_t delay )
 
 
 
-uint32_t RtcGetTimerValue( void )
+
+
+int64_t RtcGetTimerValue( void )
 {
-    return ( uint32_t )HwTimerGetTime( );
+    struct timeval tv_now = HwTimerGetTime( );
+    int64_t time_us = (int64_t)tv_now.tv_sec * 1000000L + (int64_t)tv_now.tv_usec;
+    return time_us;
 }
 
 
 
 uint32_t RtcGetCalendarTime( uint16_t *milliseconds )
 {
-    uint32_t ticks = 0;
+    struct timeval calendarValue = HwTimerGetTime( );
 
-    uint32_t calendarValue = HwTimerGetTime( );
+    uint32_t seconds = calendarValue.tv_sec;
 
-    uint32_t seconds = ( uint32_t )calendarValue >> 10;
-
-    ticks =  ( uint32_t )calendarValue & 0x3FF;
-
-    *milliseconds = RtcTick2Ms( ticks );
+    *milliseconds = calendarValue.tv_usec / 1000;
 
     return seconds;
 }
