@@ -269,8 +269,25 @@ DioIrqHandler *DioIrq[] = { SX1276OnDio0Irq, SX1276OnDio1Irq,
  * Tx and Rx timers
  */
 TimerEvent_t TxTimeoutTimer;
+
+static const esp_timer_create_args_t TxTimeoutTimer_args = {
+        .callback = &SX1276OnTimeoutIrq,
+        .name = "TxTimeoutTimer"
+};
+
 TimerEvent_t RxTimeoutTimer;
+
+static const esp_timer_create_args_t RxTimeoutTimer_args = {
+        .callback = &SX1276OnTimeoutIrq,
+        .name = "RxTimeoutTimer"
+};
+
 TimerEvent_t RxTimeoutSyncWord;
+
+static const esp_timer_create_args_t RxTimeoutSyncWord_args = {
+        .callback = &SX1276OnTimeoutIrq,
+        .name = "RxTimeoutSyncWord"
+};
 
 /*
  * Radio driver functions implementation
@@ -284,9 +301,9 @@ void SX1276Init( RadioEvents_t *events )
     RadioEvents = events;
 
     // Initialize driver timeout timers
-    TimerInit( &TxTimeoutTimer, SX1276OnTimeoutIrq );
-    TimerInit( &RxTimeoutTimer, SX1276OnTimeoutIrq );
-    TimerInit( &RxTimeoutSyncWord, SX1276OnTimeoutIrq );
+    TimerInit( &TxTimeoutTimer_args 	, &TxTimeoutTimer );
+    TimerInit( &RxTimeoutTimer_args		, &RxTimeoutTimer );
+    TimerInit( &RxTimeoutSyncWord_args	, &RxTimeoutSyncWord );
 
     SX1276Reset( );
 

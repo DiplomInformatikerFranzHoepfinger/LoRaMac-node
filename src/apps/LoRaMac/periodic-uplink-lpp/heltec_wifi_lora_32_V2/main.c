@@ -136,6 +136,15 @@ static bool AppLedStateOn = false;
  */
 static TimerEvent_t TxTimer;
 
+/*!
+ * Function executed on TxTimer event
+ */
+static void OnTxTimerEvent( void* context );
+
+static const esp_timer_create_args_t TxTimer_args = {
+        .callback = &OnTxTimerEvent,
+        .name = "TxTimer"
+};
 
 /*!
  * Timer to handle the state of LED beacon indicator
@@ -164,10 +173,6 @@ static void UplinkProcess( void );
 static void OnTxPeriodicityChanged( uint32_t periodicity );
 static void OnTxFrameCtrlChanged( bool isTxConfirmed );
 
-/*!
- * Function executed on TxTimer event
- */
-static void OnTxTimerEvent( void* context );
 
 
 static LmHandlerCallbacks_t LmHandlerCallbacks =
@@ -435,7 +440,7 @@ static void StartTxProcess( LmHandlerTxEvents_t txEvent )
     case LORAMAC_HANDLER_TX_ON_TIMER:
         {
             // Schedule 1st packet transmission
-            TimerInit( &TxTimer, OnTxTimerEvent );
+            TimerInit( &TxTimer_args, &TxTimer );
             TimerSetValue( &TxTimer, TxPeriodicity );
             OnTxTimerEvent( NULL );
         }

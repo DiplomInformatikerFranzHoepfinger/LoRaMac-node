@@ -31,19 +31,16 @@ extern "C"
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "esp_timer.h"
 
 /*!
  * \brief Timer object description
  */
 typedef struct TimerEvent_s
 {
-    uint32_t Timestamp;                  //! Current timer value
-    uint32_t ReloadValue;                //! Timer delay value
-    bool IsStarted;                      //! Is the timer currently running
-    bool IsNext2Expire;                  //! Is the next timer to expire
-    void ( *Callback )( void* context ); //! Timer IRQ callback function
-    void *Context;                       //! User defined data object pointer to pass back
-    struct TimerEvent_s *Next;           //! Pointer to the next Timer object.
+	uint64_t timeout_us;
+    esp_timer_handle_t esp_timer;
+    esp_timer_create_args_t* create_args;
 }TimerEvent_t;
 
 /*!
@@ -60,18 +57,13 @@ typedef uint32_t TimerTime_t;
  * \remark TimerSetValue function must be called before starting the timer.
  *         this function initializes timestamp and reload value at 0.
  *
- * \param [IN] obj          Structure containing the timer object parameters
- * \param [IN] callback     Function callback called at the end of the timeout
+ * @param create_args   Pointer to a structure with timer creation arguments.
+ *                      Not saved by the library, can be allocated on the stack.
+ * @param[out] out_handle  Output, pointer to esp_timer_handle_t variable which
+ *                         will hold the created timer handle.
  */
-void TimerInit( TimerEvent_t *obj, void ( *callback )( void *context ) );
-
-/*!
- * \brief Sets a user defined object pointer
- *
- * \param [IN] context User defined data object pointer to pass back
- *                     on IRQ handler callback
- */
-void TimerSetContext( TimerEvent_t *obj, void* context );
+void TimerInit(const esp_timer_create_args_t* create_args,
+		TimerEvent_t* out_handle);
 
 /*!
  * Timer IRQ event handler
@@ -85,15 +77,6 @@ void TimerIrqHandler( void );
  */
 void TimerStart( TimerEvent_t *obj );
 
-/*!
- * \brief Checks if the provided timer is running
- *
- * \param [IN] obj Structure containing the timer object parameters
- *
- * \retval status  returns the timer activity status [true: Started,
- *                                                    false: Stopped]
- */
-bool TimerIsStarted( TimerEvent_t *obj );
 
 /*!
  * \brief Stops and removes the timer object from the list of timer events
@@ -115,7 +98,7 @@ void TimerReset( TimerEvent_t *obj );
  * \param [IN] obj   Structure containing the timer object parameters
  * \param [IN] value New timer timeout value
  */
-void TimerSetValue( TimerEvent_t *obj, uint32_t value );
+void TimerSetValue( TimerEvent_t *obj, uint32_t timeout_ms );
 
 /*!
  * \brief Read the current time

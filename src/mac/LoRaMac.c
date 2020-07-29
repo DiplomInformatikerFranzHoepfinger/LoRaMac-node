@@ -345,6 +345,31 @@ typedef struct sLoRaMacCtx
     TimerTime_t DutyCycleWaitTime;
 }LoRaMacCtx_t;
 
+
+static void OnTxDelayedTimerEvent( void* context );
+static const esp_timer_create_args_t TxDelayedTimer_args = {
+        .callback = &OnTxDelayedTimerEvent,
+        .name = "MacCtx.TxDelayedTimer"
+};
+
+static void OnRxWindow1TimerEvent( void* context );
+static const esp_timer_create_args_t RxWindowTimer1_args = {
+        .callback = &OnRxWindow1TimerEvent,
+        .name = "MacCtx.RxWindowTimer1"
+};
+
+static void OnRxWindow2TimerEvent( void* context );
+static const esp_timer_create_args_t RxWindowTimer2_args = {
+        .callback = &OnRxWindow2TimerEvent,
+        .name = "MacCtx.RxWindowTimer2"
+};
+
+static void OnRetransmitTimeoutTimerEvent( void* context );
+static const esp_timer_create_args_t RetransmitTimeoutTimer_args = {
+        .callback = &OnRetransmitTimeoutTimerEvent,
+        .name = "MacCtx.RetransmitTimeoutTimer"
+};
+
 /*
  * Module context.
  */
@@ -3403,10 +3428,10 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t* primitives, LoRaMacC
     MacCtx.NvmCtx->AggregatedTimeOff = 0;
 
     // Initialize timers
-    TimerInit( &MacCtx.TxDelayedTimer, OnTxDelayedTimerEvent );
-    TimerInit( &MacCtx.RxWindowTimer1, OnRxWindow1TimerEvent );
-    TimerInit( &MacCtx.RxWindowTimer2, OnRxWindow2TimerEvent );
-    TimerInit( &MacCtx.RetransmitTimeoutTimer, OnRetransmitTimeoutTimerEvent );
+    TimerInit( &TxDelayedTimer_args, 		&MacCtx.TxDelayedTimer  );
+    TimerInit( &RxWindowTimer1_args, 		&MacCtx.RxWindowTimer1  );
+    TimerInit( &RxWindowTimer2_args, 		&MacCtx.RxWindowTimer2  );
+    TimerInit( &RetransmitTimeoutTimer_args, &MacCtx.RetransmitTimeoutTimer );
 
     // Store the current initialization time
     MacCtx.NvmCtx->InitializationTime = SysTimeGetMcuTime( );

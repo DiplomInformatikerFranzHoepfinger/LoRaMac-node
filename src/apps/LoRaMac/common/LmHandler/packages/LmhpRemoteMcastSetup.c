@@ -162,10 +162,20 @@ McSessionData_t McSessionData[LORAMAC_MAX_MC_CTX];
  */
 static TimerEvent_t SessionStartTimer;
 
+static const esp_timer_create_args_t SessionStartTimer_args = {
+        .callback = &OnSessionStartTimer,
+        .name = "SessionStartTimer"
+};
+
 /*!
  * Session start timer
  */
 static TimerEvent_t SessionStopTimer;
+
+static const esp_timer_create_args_t SessionStopTimer_args = {
+        .callback = &OnSessionStopTimer,
+        .name = "SessionStopTimer"
+};
 
 static LmhPackage_t LmhpRemoteMcastSetupPackage =
 {
@@ -197,8 +207,8 @@ static void LmhpRemoteMcastSetupInit( void * params, uint8_t *dataBuffer, uint8_
         LmhpRemoteMcastSetupState.DataBuffer = dataBuffer;
         LmhpRemoteMcastSetupState.DataBufferMaxSize = dataBufferMaxSize;
         LmhpRemoteMcastSetupState.Initialized = true;
-        TimerInit( &SessionStartTimer, OnSessionStartTimer );
-        TimerInit( &SessionStopTimer, OnSessionStopTimer );
+        TimerInit( &SessionStartTimer_args, &SessionStartTimer );
+        TimerInit( &SessionStopTimer_args, &SessionStopTimer );
     }
     else
     {

@@ -178,10 +178,17 @@ static uint32_t TxDelayTime;
 // Fragment Delay Timer struct
 static TimerEvent_t FragmentTxDelayTimer;
 
+static void OnFragmentTxDelay(void* arg);
+
+static const esp_timer_create_args_t FragmentTxDelayTimer_args = {
+        .callback = &OnFragmentTxDelay,
+        .name = "FragmentTxDelayTimer"
+};
+
 /*!
  * \brief Callback function for Fragment delay timer.
  */
-static void OnFragmentTxDelay( void* context )
+static void OnFragmentTxDelay(void* arg)
 {
     // Stop the timer.
     TimerStop( &FragmentTxDelayTimer );
@@ -205,7 +212,7 @@ static void LmhpFragmentationInit( void *params, uint8_t *dataBuffer, uint8_t da
         // Initialize Fragmentation delay time.
         TxDelayTime = 0;
         // Initialize Fragmentation delay timer.
-        TimerInit( &FragmentTxDelayTimer, OnFragmentTxDelay );
+        TimerInit( &FragmentTxDelayTimer_args, &FragmentTxDelayTimer );
     }
     else
     {
