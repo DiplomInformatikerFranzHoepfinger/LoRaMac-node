@@ -120,13 +120,15 @@ NvmmStatus_t NvmmVerify( NvmmDataBlock_t* dataB, size_t num )
     {
         return NVMM_FAIL_CHECKSUM;
     }
-
-    if( ComputeChecksumNvm( dataB->virtualAddr, dataBHdr.Num ) == dataBHdr.CSum )
+	uint32_t computeChecksumNvm = ComputeChecksumNvm(dataB->virtualAddr,dataBHdr.Num);
+	if (computeChecksumNvm == dataBHdr.CSum)
     {
+        ESP_LOGI(TAG, "ComputeChecksumNvm      NVMM_SUCCESS      , Num %i, CSum %i, computeChecksumNvm %i", dataBHdr.Num, dataBHdr.CSum, computeChecksumNvm);
         return NVMM_SUCCESS;
     }
     else
     {
+        ESP_LOGI(TAG, "ComputeChecksumNvm      NVMM_FAIL_CHECKSUM, Num %i, CSum %i, computeChecksumNvm %i", dataBHdr.Num, dataBHdr.CSum, computeChecksumNvm);
         return NVMM_FAIL_CHECKSUM;
     }
 }
@@ -150,6 +152,7 @@ NvmmStatus_t NvmmWrite( NvmmDataBlock_t* dataB, void* src, size_t num )
     dataBHdr.CSum = ComputeChecksum( ( uint8_t* ) src, num );
 
     // Update data block header
+    ESP_LOGI(TAG, "Update data block header, Num %i, CSum %i", dataBHdr.Num, dataBHdr.CSum);
     EepromWriteBuffer( ( dataB->virtualAddr - sizeof( DataBlockHeader_t ) ), ( uint8_t* ) &dataBHdr, sizeof( DataBlockHeader_t ) );
 
     // Write data block

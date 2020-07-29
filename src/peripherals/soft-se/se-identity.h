@@ -104,7 +104,7 @@ extern "C" {
              * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_GEN_APP_KEY                                        \
              */                                                                                                     \
             .KeyID    = APP_KEY,                                                                                    \
-            .KeyValue = { 0x9A, 0xE4, 0x05, 0x1E, 0xC0, 0x41, 0x5A, 0x5A, 0x02, 0x32, 0x83, 0xCF, 0xD8, 0x99, 0x64, 0xA5 },\
+            .KeyValue = { 0x7B, 0x1E, 0xBB, 0x2C, 0xF2, 0x3E, 0x8A, 0x6E, 0xE3, 0x50, 0x4B, 0x77, 0x52, 0xD4, 0x0D, 0xE9 },\
         },                                                                                                          \
         {                                                                                                           \
             /*!                                                                                                     \
@@ -112,7 +112,7 @@ extern "C" {
              * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_APP_KEY                                            \
              */                                                                                                     \
             .KeyID    = NWK_KEY,                                                                                    \
-            .KeyValue = { 0x9A, 0xE4, 0x05, 0x1E, 0xC0, 0x41, 0x5A, 0x5A, 0x02, 0x32, 0x83, 0xCF, 0xD8, 0x99, 0x64, 0xA5 },\
+            .KeyValue = { 0x7B, 0x1E, 0xBB, 0x2C, 0xF2, 0x3E, 0x8A, 0x6E, 0xE3, 0x50, 0x4B, 0x77, 0x52, 0xD4, 0x0D, 0xE9 },\
         },                                                                                                          \
         {                                                                                                           \
             /*!                                                                                                     \
