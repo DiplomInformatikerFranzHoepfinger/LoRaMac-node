@@ -67,10 +67,8 @@ uint32_t RtcMs2Tick( TimerTime_t milliseconds )
 
 TimerTime_t RtcTick2Ms( uint32_t tick )
 {
-    uint32_t seconds = tick >> 10;
 
-    tick = tick & 0x3FF;
-    return ( ( seconds * 1000 ) + ( ( tick * 1000 ) >> 10 ) );
+    return tick;
 }
 
 /*!
