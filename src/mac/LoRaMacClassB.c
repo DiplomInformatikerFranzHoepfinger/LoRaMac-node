@@ -25,6 +25,7 @@ Maintainer: Miguel Luis ( Semtech ), Gregory Cristian ( Semtech ) and Daniel Jae
 #include "LoRaMacClassBConfig.h"
 #include "LoRaMacCrypto.h"
 #include "LoRaMacConfirmQueue.h"
+#include "main.h"
 
 #ifdef LORAMAC_CLASSB_ENABLED
 
@@ -157,6 +158,25 @@ typedef struct sLoRaMacClassBCtx
     */
     LoRaMacClassBNvmCtx_t* NvmCtx;
 } LoRaMacClassBCtx_t;
+
+
+static const esp_timer_create_args_t BeaconTimer_args = {
+        .callback = &LoRaMacClassBBeaconTimerEvent,
+        .name = "BeaconTimer"
+};
+
+static const esp_timer_create_args_t PingSlotTimer_args = {
+        .callback = &LoRaMacClassBPingSlotTimerEvent,
+        .name = "PingSlotTimer"
+};
+
+static const esp_timer_create_args_t MulticastSlotTimer_args = {
+        .callback = &LoRaMacClassBMulticastSlotTimerEvent,
+        .name = "MulticastSlotTimer"
+};
+
+
+
 
 /*!
  * Defines the LoRaMac radio events status
@@ -712,9 +732,9 @@ void LoRaMacClassBInit( LoRaMacClassBParams_t *classBParams, LoRaMacClassBCallba
     Ctx.LoRaMacClassBNvmEvent = classBNvmCtxChanged;
 
     // Initialize timers
-    TimerInit( &Ctx.BeaconTimer, LoRaMacClassBBeaconTimerEvent );
-    TimerInit( &Ctx.PingSlotTimer, LoRaMacClassBPingSlotTimerEvent );
-    TimerInit( &Ctx.MulticastSlotTimer, LoRaMacClassBMulticastSlotTimerEvent );
+    TimerInit( &BeaconTimer_args, 			&Ctx.BeaconTimer );
+    TimerInit( &PingSlotTimer_args,  		&Ctx.PingSlotTimer );
+    TimerInit( &MulticastSlotTimer_args,  	&Ctx.MulticastSlotTimer );
 
     InitClassB( );
 #endif // LORAMAC_CLASSB_ENABLED

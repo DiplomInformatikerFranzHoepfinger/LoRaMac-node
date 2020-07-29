@@ -102,6 +102,7 @@ set(COMPONENT_ADD_INCLUDEDIRS
 	"../src/apps/LoRaMac/common"
 	"../src/apps/LoRaMac/common/LmHandler"
 	"../src/apps/LoRaMac/common/LmHandler/packages"
+	"../src/apps/LoRaMac/periodic-uplink-lpp/heltec_wifi_lora_32_V2"
 	"../src/peripherals/soft-se"
 )
 

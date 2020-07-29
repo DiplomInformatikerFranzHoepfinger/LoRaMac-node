@@ -41,13 +41,7 @@
 
 #define TAG "--main--"
 
-#ifndef ACTIVE_REGION
-
-#warning "No active region defined, LORAMAC_REGION_EU868 will be used as default."
-
-#define ACTIVE_REGION LORAMAC_REGION_EU868
-
-#endif
+#include "main.h"
 
 /*!
  * LoRaWAN default end-device class
