@@ -222,7 +222,7 @@ void LpmEnterSleepMode( void)
 
 void BoardLowPowerHandler( void )
 {
-	vTaskDelay(1000 / portTICK_PERIOD_MS);
+	vTaskDelay(10 / portTICK_PERIOD_MS);
 }
 
 
