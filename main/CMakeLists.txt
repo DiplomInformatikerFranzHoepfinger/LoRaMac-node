@@ -9,7 +9,8 @@ set(COMPONENT_SRCS
 	#---------------------------------------------------------------------------------------
 	# Target
 	#---------------------------------------------------------------------------------------
-	"../src/apps/LoRaMac/periodic-uplink-lpp/heltec_wifi_lora_32_V2/main.c"
+	#"../src/apps/LoRaMac/periodic-uplink-lpp/heltec_wifi_lora_32_V2/main.c"
+	"../src/apps/ping-pong/heltec_wifi_lora_32_V2/main.c"
 	"../src/boards/heltec_wifi_lora_32_V2/board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/spi-board.c"
 	"../src/boards/heltec_wifi_lora_32_V2/rtc-board.c"
