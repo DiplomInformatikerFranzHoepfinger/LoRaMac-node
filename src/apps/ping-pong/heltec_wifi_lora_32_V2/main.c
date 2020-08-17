@@ -22,12 +22,17 @@
  *
  * \author    Marten Lootsma(TWTG) on behalf of Microchip/Atmel (c)2017
  */
+#include <stdlib.h>
 #include <string.h>
+#include "esp_log.h"
+#include "esp_system.h"
 #include "board.h"
 #include "gpio.h"
 #include "delay.h"
 #include "timer.h"
 #include "radio.h"
+
+#define TAG "Ping-Pong implementation"
 
 #if defined( REGION_AS923 )
 
@@ -245,7 +250,9 @@ void app_main( void )
                             Buffer[i] = i - 4;
                         }
                         DelayMs( 1 );
+						ESP_LOGI(TAG, "will send: %s", Buffer);
                         Radio.Send( Buffer, BufferSize );
+                        ESP_LOGI(TAG, "Sent: %s", Buffer);
                     }
                     else if( strncmp( ( const char* )Buffer, ( const char* )PingMsg, 4 ) == 0 )
                     { // A master already exists then become a slave
@@ -279,7 +286,9 @@ void app_main( void )
                             Buffer[i] = i - 4;
                         }
                         DelayMs( 1 );
+						ESP_LOGI(TAG, "will send: %s", Buffer);
                         Radio.Send( Buffer, BufferSize );
+                        ESP_LOGI(TAG, "Sent: %s", Buffer);
                     }
                     else // valid reception but not a PING as expected
                     {    // Set device as master and start again
@@ -310,7 +319,9 @@ void app_main( void )
                     Buffer[i] = i - 4;
                 }
                 DelayMs( 1 );
+                ESP_LOGI(TAG, "will send: %s", Buffer);
                 Radio.Send( Buffer, BufferSize );
+                ESP_LOGI(TAG, "Sent: %s", Buffer);
             }
             else
             {

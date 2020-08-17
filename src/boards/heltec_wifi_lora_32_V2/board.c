@@ -20,6 +20,9 @@
  *
  * \author    Gregory Cristian ( Semtech )
  */
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "sdkconfig.h"
 #include "esp_system.h"
 #include "nvs_flash.h"
@@ -219,7 +222,7 @@ void LpmEnterSleepMode( void)
 
 void BoardLowPowerHandler( void )
 {
-	//TODO
+	vTaskDelay(1000 / portTICK_PERIOD_MS);
 }
 
 
