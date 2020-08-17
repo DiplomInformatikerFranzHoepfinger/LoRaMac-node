@@ -75,6 +75,7 @@
 
 #define TX_OUTPUT_POWER                             14        // dBm
 
+#define USE_MODEM_LORA
 #if defined( USE_MODEM_LORA )
 
 #define LORA_BANDWIDTH                              0         // [0: 125 kHz,
@@ -133,10 +134,6 @@ int8_t SnrValue = 0;
  */
 static RadioEvents_t RadioEvents;
 
-/*!
- * LED GPIO pins objects
- */
-extern Gpio_t Led1;
 
 /*!
  * \brief Function to be executed on Radio Tx Done event
@@ -235,7 +232,7 @@ void app_main( void )
                     if( strncmp( ( const char* )Buffer, ( const char* )PongMsg, 4 ) == 0 )
                     {
                         // Indicates on a LED that the received frame is a PONG
-                        GpioWrite( &Led1, GpioRead( &Led1 ) ^ 1 );
+                        //GpioWrite( &Led1, GpioRead( &Led1 ) ^ 1 );
 
                         // Send the next PING frame
                         Buffer[0] = 'P';
@@ -269,7 +266,7 @@ void app_main( void )
                     if( strncmp( ( const char* )Buffer, ( const char* )PingMsg, 4 ) == 0 )
                     {
                         // Indicates on a LED that the received frame is a PING
-                        GpioWrite( &Led1, GpioRead( &Led1 ) ^ 1 );
+                        //GpioWrite( &Led1, GpioRead( &Led1 ) ^ 1 );
 
                         // Send the reply to the PONG string
                         Buffer[0] = 'P';
